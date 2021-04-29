@@ -50,20 +50,14 @@ const CreatePage = () => {
 
   React.useEffect(() => {
     if (state && state.postalNumber) {
-      api
-        .get(`/ws/${state.postalNumber}/json/`)
-        .then((response) => {
-          form.setFieldsValue({
-            streetName: response.data.logradouro,
-            districtName: response.data.bairro,
-            cityName: response.data.localidade,
-            stateName: response.data.uf,
-          });
-        })
-        .catch((err) => {
-          console.error("ops! ocorreu um erro" + err);
+      api.get(`/ws/${state.postalNumber}/json/`).then((response) => {
+        form.setFieldsValue({
+          streetName: response.data.logradouro,
+          districtName: response.data.bairro,
+          cityName: response.data.localidade,
+          stateName: response.data.uf,
         });
-      console.warn(state);
+      });
     }
   });
 
