@@ -12,25 +12,17 @@ import {
 } from "antd";
 import axios from "axios";
 
-const CreatePage = (props) => {
+const CreatePage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
   const { Option } = Select;
   const { Search } = Input;
 
   const [state, setState] = React.useState({
-    name: "",
-    federalDocument: "",
-    stateDocument: "",
-    gender: "",
-    birthDate: "",
-    telephone: "",
     postalNumber: "",
-    streetName: "",
-    districtName: "",
-    cityName: "",
-    stateName: "",
   });
+
+  const [form] = Form.useForm();
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -38,22 +30,6 @@ const CreatePage = (props) => {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
-  };
-
-  const onGenderChange = (value) => {
-    switch (value) {
-      case "male":
-        setState({ ...state, gender: "male" });
-        return;
-
-      case "female":
-        setState({ ...state, gender: "female" });
-        return;
-
-      default:
-        setState({ ...state, gender: "other" });
-        return;
-    }
   };
 
   const api = axios.create({
@@ -66,23 +42,29 @@ const CreatePage = (props) => {
     }
   };
 
-  const addAddress = (response) => {
-    setState({ ...state, streetName: response.logradouro });
-  };
-
   const onSearchPostalNumber = (value) => {
     if (value) {
-      api
-        .get(`/ws/${value}/json/`)
-        .then((response) => addAddress(response.data))
-        .catch((err) => {
-          console.error("ops! ocorreu um erro" + err);
-        });
+      setState({ ...state, postalNumber: value });
     }
   };
 
   React.useEffect(() => {
-    console.warn(state);
+    if (state && state.postalNumber) {
+      api
+        .get(`/ws/${state.postalNumber}/json/`)
+        .then((response) => {
+          form.setFieldsValue({
+            streetName: response.data.logradouro,
+            districtName: response.data.bairro,
+            cityName: response.data.localidade,
+            stateName: response.data.uf,
+          });
+        })
+        .catch((err) => {
+          console.error("ops! ocorreu um erro" + err);
+        });
+      console.warn(state);
+    }
   });
 
   return (
@@ -108,6 +90,7 @@ const CreatePage = (props) => {
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
+                form={form}
               >
                 <Form.Item
                   label="Nome"
@@ -149,11 +132,7 @@ const CreatePage = (props) => {
                     },
                   ]}
                 >
-                  <Select
-                    placeholder="Selecione uma opção"
-                    onChange={onGenderChange}
-                    allowClear
-                  >
+                  <Select placeholder="Selecione uma opção" allowClear>
                     <Option value="male">Masculino</Option>
                     <Option value="female">Feminino</Option>
                   </Select>
@@ -207,9 +186,8 @@ const CreatePage = (props) => {
                 </Form.Item>
 
                 <Form.Item
-                  label="Logradouro e Número"
+                  label="Rua e Número"
                   name="streetName"
-                  value={state.logradouro}
                   rules={[
                     {
                       required: true,
