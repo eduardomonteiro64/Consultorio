@@ -1,10 +1,34 @@
 import React from "react";
-import { Layout, Row, Col, Typography, Input, Space, Card, Button } from "antd";
+import {
+  Layout,
+  Row,
+  Col,
+  Typography,
+  Input,
+  Space,
+  Card,
+  Button,
+  Modal,
+} from "antd";
 
 const DeletePage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
   const { Search } = Input;
+
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const onSearch = (value) => console.log(value);
   return (
@@ -33,9 +57,19 @@ const DeletePage = () => {
               >
                 <p>Nome Paciente 1</p>
                 <p>Documento Paciente 1</p>
-                <Button type="primary" danger>
+                <Button type="primary" danger onClick={showModal}>
                   Deletar
                 </Button>
+                <Modal
+                  title="Deletar Usuário"
+                  visible={isModalVisible}
+                  onOk={handleOk}
+                  onCancel={handleCancel}
+                  cancelText="Voltar"
+                  okButtonProps={{ danger: true }}
+                >
+                  <p>Tem certeza que deseja deletar o usuário X?</p>
+                </Modal>
               </Card>
             </Space>
           </Col>

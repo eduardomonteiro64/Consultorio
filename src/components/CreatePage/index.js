@@ -139,10 +139,12 @@ const CreatePage = () => {
                   wrapperCol={{
                     span: 2,
                   }}
+                  name="birthDate"
                   label="Data de Nascimento"
                   rules={[
                     {
                       required: true,
+                      message: "Por favor insira uma data de nascimento.",
                     },
                   ]}
                 >
