@@ -11,13 +11,19 @@ import {
   Modal,
   Descriptions,
 } from "antd";
+import axios from "axios";
 
 const SearchPage = (props) => {
   const { Content } = Layout;
   const { Title } = Typography;
   const { Search } = Input;
 
+  const url = "http://localhost:3003/api/consultorio";
+  // const id = "6099e2a99e46b7251cf5f759";
+
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+  const [state, setState] = React.useState(undefined);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -31,7 +37,13 @@ const SearchPage = (props) => {
     setIsModalVisible(false);
   };
 
-  const onSearch = (value) => console.log(value);
+  const onSearch = (value) => {
+    axios
+      .get(`${url}/?stateDocument=${value}`)
+      .then((resp) => setState(resp.data[0]));
+    setIsModalVisible(false);
+  };
+
   return (
     <Content style={{ margin: "0 16px" }}>
       <div
@@ -52,53 +64,61 @@ const SearchPage = (props) => {
               />
             </Col>
             <Space direction="vertical">
-              <Card
-                title="Informações"
-                style={{ width: window.screen.width < 576 ? 200 : 300 }}
-              >
-                <p>Nome Paciente 1</p>
-                <p>Documento Paciente 1</p>
-                <Button type="primary" onClick={showModal}>
-                  Ver Ficha Completa
-                </Button>
-                <Modal
-                  title="Informação do Usuário"
-                  visible={isModalVisible}
-                  onOk={handleOk}
-                  onCancel={handleCancel}
-                  cancelText="Voltar"
+              {state && state !== undefined ? (
+                <Card
+                  title="Informações"
+                  style={{ width: window.screen.width < 576 ? 200 : 300 }}
                 >
-                  <Descriptions layout="vertical">
-                    <Descriptions.Item label="Nome Completo">
-                      João José da Silva
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Genero">
-                      Masculino
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Data de Nascimento">
-                      01/01/1900
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Telefone/Celular">
-                      +55(13)91234-5678
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Rua e Número" span={2}>
-                      Rua Dos Bobos, Número 0
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Bairro">
-                      Vila do Sapo
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Estado/Cidade">
-                      São Paulo, Santos
-                    </Descriptions.Item>
-                    <Descriptions.Item label="CPF">
-                      012.345.789-0X
-                    </Descriptions.Item>
-                    <Descriptions.Item label="RG">
-                      12.123.456-X
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Modal>
-              </Card>
+                  <p>Nome: {state.name}</p>
+                  <p>Documento: {state.stateDocument}</p>
+                  <Button type="primary" onClick={showModal}>
+                    Ver Ficha Completa
+                  </Button>
+                  <Modal
+                    title="Informação do Usuário"
+                    visible={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    cancelText="Voltar"
+                  >
+                    <Descriptions layout="vertical">
+                      <Descriptions.Item label="Nome Completo">
+                        {state.name}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Genero">
+                        {state.gender && state.gender === "male"
+                          ? "Masculino"
+                          : "Feminino"}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Data de Nascimento">
+                        {state.birthDate
+                          ? state.birthDate.substring(0, 10)
+                          : ""}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Telefone/Celular">
+                        {state.telephone}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Rua e Número" span={2}>
+                        {state.streetName}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Bairro">
+                        {state.districtName}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Estado/Cidade">
+                        {state.cityName}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="CPF">
+                        {state.federalDocument}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="RG">
+                        {state.stateDocument}
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </Modal>
+                </Card>
+              ) : (
+                ""
+              )}
             </Space>
           </Col>
         </Row>

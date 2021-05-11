@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   Layout,
   Row,
@@ -18,11 +19,17 @@ const DeletePage = () => {
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
+  const [state, setState] = React.useState(undefined);
+
+  const url = "http://localhost:3003/api/consultorio";
+
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
+    axios.delete(`${url}/${state._id}`).then((resp) => setState(resp.data));
+    alert("Usuário deletado com sucesso!");
     setIsModalVisible(false);
   };
 
@@ -30,7 +37,13 @@ const DeletePage = () => {
     setIsModalVisible(false);
   };
 
-  const onSearch = (value) => console.log(value);
+  const onSearch = (value) => {
+    axios
+      .get(`${url}/?stateDocument=${value}`)
+      .then((resp) => setState(resp.data[0]));
+    setIsModalVisible(false);
+  };
+
   return (
     <Content style={{ margin: "0 16px" }}>
       <div
@@ -51,26 +64,32 @@ const DeletePage = () => {
               />
             </Col>
             <Space direction="vertical">
-              <Card
-                title="Informações"
-                style={{ width: window.screen.width < 576 ? 200 : 300 }}
-              >
-                <p>Nome Paciente 1</p>
-                <p>Documento Paciente 1</p>
-                <Button type="primary" danger onClick={showModal}>
-                  Deletar
-                </Button>
-                <Modal
-                  title="Deletar Usuário"
-                  visible={isModalVisible}
-                  onOk={handleOk}
-                  onCancel={handleCancel}
-                  cancelText="Voltar"
-                  okButtonProps={{ danger: true }}
+              {state && state !== undefined ? (
+                <Card
+                  title="Informações"
+                  style={{ width: window.screen.width < 576 ? 200 : 300 }}
                 >
-                  <p>Tem certeza que deseja deletar o usuário X?</p>
-                </Modal>
-              </Card>
+                  <p>Nome: {state.name}</p>
+                  <p>Documento: {state.stateDocument}</p>
+                  <Button type="primary" danger onClick={showModal}>
+                    Deletar
+                  </Button>
+                  <Modal
+                    title="Deletar Usuário"
+                    visible={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    cancelText="Voltar"
+                    okButtonProps={{ danger: true }}
+                  >
+                    <p>
+                      Tem certeza que deseja deletar o usuário {state.name}?
+                    </p>
+                  </Modal>
+                </Card>
+              ) : (
+                ""
+              )}
             </Space>
           </Col>
         </Row>

@@ -9,17 +9,21 @@ import {
   Button,
   Drawer,
   Select,
-  DatePicker,
   Form,
 } from "antd";
+import axios from "axios";
 
-const UpdatePage = (props) => {
+const UpdatePage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
   const { Search } = Input;
   const { Option } = Select;
 
+  const [state, setState] = React.useState(undefined);
+
   const [visible, setVisible] = React.useState(false);
+
+  const url = "http://localhost:3003/api/consultorio";
 
   const showDrawer = () => {
     setVisible(true);
@@ -29,16 +33,29 @@ const UpdatePage = (props) => {
     setVisible(false);
   };
 
-  const onSearch = (value) => console.log(value);
-
-  const onChangeDatePicker = (value) => {
-    if (value && value._d) {
-      console.warn(value._d);
-    }
+  const onSearch = (value) => {
+    axios
+      .get(`${url}/?stateDocument=${value}`)
+      .then((resp) => setState(resp.data[0]));
+    setVisible(false);
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values);
+    axios
+      .put(`${url}/${state._id}`, {
+        birthDate: values.birthDate,
+        cityName: values.cityName,
+        districtName: values.districtName,
+        federalDocument: values.federalDocument,
+        gender: values.gender,
+        name: values.name,
+        postalNumber: values.postalNumber,
+        stateDocument: values.stateDocument,
+        stateName: values.stateName,
+        streetName: values.streetName,
+        telephone: values.telephone,
+      })
+      .then((resp) => setState(resp.data));
     setVisible(false);
   };
 
@@ -65,34 +82,45 @@ const UpdatePage = (props) => {
                 onSearch={onSearch}
                 style={{ margin: 20 }}
               />
-              <Descriptions layout="vertical">
-                <Descriptions.Item label="Nome Completo">
-                  João José da Silva
-                </Descriptions.Item>
-                <Descriptions.Item label="Genero">Masculino</Descriptions.Item>
-                <Descriptions.Item label="Data de Nascimento">
-                  01/01/1900
-                </Descriptions.Item>
-                <Descriptions.Item label="Telefone/Celular">
-                  +55(13)91234-5678
-                </Descriptions.Item>
-                <Descriptions.Item label="Rua e Número" span={2}>
-                  Rua Dos Bobos, Número 0
-                </Descriptions.Item>
-                <Descriptions.Item label="Bairro">
-                  Vila do Sapo
-                </Descriptions.Item>
-                <Descriptions.Item label="Estado/Cidade">
-                  São Paulo, Santos
-                </Descriptions.Item>
-                <Descriptions.Item label="CPF">
-                  012.345.789-0X
-                </Descriptions.Item>
-                <Descriptions.Item label="RG">12.123.456-X</Descriptions.Item>
-              </Descriptions>
-              <Button type="primary" onClick={showDrawer}>
-                Editar
-              </Button>
+              {state && state !== undefined ? (
+                <>
+                  <Descriptions layout="vertical">
+                    <Descriptions.Item label="Nome Completo">
+                      {state.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Genero">
+                      {state.gender}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Data de Nascimento">
+                      {state.birthDate ? state.birthDate.substring(0, 10) : ""}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Telefone/Celular">
+                      {state.telephone}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Rua e Número" span={2}>
+                      {state.streetName}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Bairro">
+                      {state.districtName}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Estado/Cidade">
+                      {state.cityName}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="CPF">
+                      {state.federalDocument}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="RG">
+                      {state.stateDocument}
+                    </Descriptions.Item>
+                  </Descriptions>
+                  <Button type="primary" onClick={showDrawer}>
+                    Editar
+                  </Button>
+                </>
+              ) : (
+                ""
+              )}
+
               <Drawer
                 title="Atualize os Dados"
                 onClose={onClose}
@@ -120,6 +148,7 @@ const UpdatePage = (props) => {
                       <Form.Item
                         name="name"
                         label="Nome Completo"
+                        initialValue={state && state.name ? state.name : ""}
                         rules={[
                           {
                             required: true,
@@ -134,6 +163,11 @@ const UpdatePage = (props) => {
                       <Form.Item
                         name="stateDocument"
                         label="RG"
+                        initialValue={
+                          state && state.stateDocument
+                            ? state.stateDocument
+                            : ""
+                        }
                         rules={[
                           {
                             required: true,
@@ -148,20 +182,20 @@ const UpdatePage = (props) => {
                       <Form.Item
                         name="federalDocument"
                         label="CPF"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Por favor insira um CPF.",
-                          },
-                        ]}
+                        initialValue={
+                          state && state.federalDocument
+                            ? state.federalDocument
+                            : ""
+                        }
                       >
                         <Input placeholder="Insira o número do CPF." />
                       </Form.Item>
                     </Col>
                     <Col span={24}>
                       <Form.Item
-                        name="owner"
+                        name="gender"
                         label="Genero"
+                        initialValue={state && state.gender ? state.gender : ""}
                         rules={[
                           { required: true, message: "Selecione o genero." },
                         ]}
@@ -176,6 +210,9 @@ const UpdatePage = (props) => {
                       <Form.Item
                         name="telephone"
                         label="Telefone/Celular"
+                        initialValue={
+                          state && state.telephone ? state.telephone : ""
+                        }
                         rules={[
                           {
                             required: true,
@@ -190,6 +227,11 @@ const UpdatePage = (props) => {
                       <Form.Item
                         name="birthDate"
                         label="Data de Nascimento"
+                        initialValue={
+                          state && state.birthDate
+                            ? state.birthDate.substring(0, 10)
+                            : ""
+                        }
                         rules={[
                           {
                             required: true,
@@ -197,13 +239,16 @@ const UpdatePage = (props) => {
                           },
                         ]}
                       >
-                        <DatePicker onChange={onChangeDatePicker} />
+                        <Input placeholder="Insira uma data de nascimento válida." />
                       </Form.Item>
                     </Col>
                     <Col span={24}>
                       <Form.Item
                         name="streetName"
                         label="Rua e Número"
+                        initialValue={
+                          state && state.streetName ? state.streetName : ""
+                        }
                         rules={[
                           {
                             required: true,
@@ -218,6 +263,9 @@ const UpdatePage = (props) => {
                       <Form.Item
                         name="cityName"
                         label="Cidade"
+                        initialValue={
+                          state && state.cityName ? state.cityName : ""
+                        }
                         rules={[
                           {
                             required: true,
@@ -232,6 +280,9 @@ const UpdatePage = (props) => {
                       <Form.Item
                         name="stateName"
                         label="Estado"
+                        initialValue={
+                          state && state.stateName ? state.stateName : ""
+                        }
                         rules={[
                           {
                             required: true,

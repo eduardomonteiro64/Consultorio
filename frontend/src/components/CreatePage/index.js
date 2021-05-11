@@ -22,25 +22,39 @@ const CreatePage = () => {
     postalNumber: "",
   });
 
+  // const [sended, setSended] = React.useState(false);
+
+  const url = "http://localhost:3003/api/consultorio";
+
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    console.log("Success:", values);
+    axios
+      .post(url, {
+        birthDate: values.birthDate,
+        cityName: values.cityName,
+        districtName: values.districtName,
+        federalDocument: values.federalDocument,
+        gender: values.gender,
+        name: values.name,
+        postalNumber: values.postalNumber,
+        stateDocument: values.stateDocument,
+        stateName: values.stateName,
+        streetName: values.streetName,
+        telephone: values.telephone,
+      })
+      .then((resp) => resp);
+    alert("Usuário incluido com sucesso!");
+    form.resetFields();
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+  const onFinishFailed = () => {
+    alert("Faltam campos a serem preenchidos.");
   };
 
   const api = axios.create({
     baseURL: "https://viacep.com.br",
   });
-
-  const onChangeDatePicker = (value) => {
-    if (value && value._d) {
-      console.warn(value._d);
-    }
-  };
 
   const onSearchPostalNumber = (value) => {
     if (value) {
@@ -148,7 +162,7 @@ const CreatePage = () => {
                     },
                   ]}
                 >
-                  <DatePicker onChange={onChangeDatePicker} />
+                  <DatePicker />
                 </Form.Item>
 
                 <Form.Item
