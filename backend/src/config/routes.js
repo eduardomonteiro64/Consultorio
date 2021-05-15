@@ -5,7 +5,7 @@ module.exports = function (server) {
   const router = express.Router();
   server.use("/api", router);
 
-  // TODO Routes
-  const userInfoService = require("../api/consultorio/userInfoService");
-  userInfoService.register(router, "/consultorio");
+  // userData Routes
+  const userInfoService = require("../api/userData/userInfoService");
+  userInfoService.register(router, "/userDataEndpoint");
 };
