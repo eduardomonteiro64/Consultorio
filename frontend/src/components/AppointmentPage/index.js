@@ -1,7 +1,7 @@
 import React from "react";
-import { Layout, Row, Col, Typography, Input, List, Card, Button } from "antd";
+import { Layout, Row, Col, Typography, Input, List, Button } from "antd";
 
-const HealthPlans = () => {
+const AppointmentPage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
   const { Search } = Input;
@@ -9,24 +9,11 @@ const HealthPlans = () => {
   const onSearch = (value) => console.log(value);
 
   const data = [
-    {
-      title: "Consulta dia 01/01",
-    },
-    {
-      title: "Consulta dia 01/02",
-    },
-    {
-      title: "Consulta dia 01/03",
-    },
-    {
-      title: "Consulta dia 01/04",
-    },
-    {
-      title: "Consulta dia 01/05",
-    },
-    {
-      title: "Consulta dia 01/06",
-    },
+    "10 Horas - Consulta com Paciente 01",
+    "11 Horas - Consulta com Paciente 02",
+    "12 Horas - Consulta com Paciente 03",
+    "13 Horas - Consulta com Paciente 04",
+    "14 Horas - Consulta com Paciente 05",
   ];
   return (
     <Content style={{ margin: "0 16px" }}>
@@ -36,10 +23,10 @@ const HealthPlans = () => {
       >
         <Row>
           <Col sm={24} xs={24} align="middle">
-            <Title>Planos de Saúde</Title>
+            <Title>Consultas</Title>
             <Col sm={22} xs={24} align="middle">
               <Search
-                placeholder="Digite o nome do plano de saúde"
+                placeholder="Digite o RG do paciente"
                 allowClear
                 enterButton="Buscar"
                 size={window.screen.width < 576 ? "small" : "large"}
@@ -48,23 +35,14 @@ const HealthPlans = () => {
               />
               {data && data.length > 1 ? (
                 <List
-                  grid={{
-                    gutter: 16,
-                    xs: 1,
-                    sm: 2,
-                    md: 4,
-                    lg: 4,
-                    xl: 6,
-                    xxl: 3,
-                  }}
+                  header={<div>Inicio do dia</div>}
+                  footer={<div>Fim do dia</div>}
+                  bordered
                   dataSource={data}
                   renderItem={(item) => (
                     <List.Item>
-                      <Card title={item.title}>Descrição do Plano</Card>
-                      <Button style={{ margin: 10 }}>Editar Plano </Button>
-                      <Button type="primary" danger style={{ margin: 10 }}>
-                        Deletar Plano{" "}
-                      </Button>
+                      <Typography.Text mark>[01/01/2021]</Typography.Text>{" "}
+                      {item}
                     </List.Item>
                   )}
                 />
@@ -73,7 +51,7 @@ const HealthPlans = () => {
               )}
 
               <Col align="end" style={{ marginTop: 50 }}>
-                <Button type="primary">Adicionar Plano</Button>
+                <Button type="primary">Adicionar Consulta</Button>
               </Col>
             </Col>
           </Col>
@@ -83,4 +61,4 @@ const HealthPlans = () => {
   );
 };
 
-export default HealthPlans;
+export default AppointmentPage;

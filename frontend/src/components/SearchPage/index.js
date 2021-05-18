@@ -55,7 +55,7 @@ const SearchPage = () => {
             <Title>Pesquisar Usuário</Title>
             <Col sm={22} xs={24} align="middle">
               <Search
-                placeholder="Digite o nome ou documento do usuário"
+                placeholder="Digite o documento do usuário"
                 allowClear
                 enterButton="Buscar"
                 size={window.screen.width < 576 ? "small" : "large"}

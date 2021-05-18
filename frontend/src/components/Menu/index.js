@@ -3,6 +3,7 @@ import { Menu } from "antd";
 import { Link } from "react-router-dom";
 
 import {
+  CalendarOutlined,
   DeleteOutlined,
   DollarOutlined,
   EditOutlined,
@@ -34,7 +35,10 @@ const MenuComponent = (props) => {
         <Menu.Item key="6" icon={<UnorderedListOutlined />}>
           <Link to="/health-plans">Planos de Saúde</Link>
         </Menu.Item>
-        <Menu.Item key="7" icon={<DollarOutlined />}>
+        <Menu.Item key="7" icon={<CalendarOutlined />}>
+          <Link to="/appointment">Consultas</Link>
+        </Menu.Item>
+        <Menu.Item key="8" icon={<DollarOutlined />}>
           <Link to="/payment">Gerar Cobrança</Link>
         </Menu.Item>
       </Menu>

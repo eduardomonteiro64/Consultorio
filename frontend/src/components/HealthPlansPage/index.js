@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, Row, Col, Typography, Input, List, Card, Button } from "antd";
 
-const HistoryPage = () => {
+const HealthPlansPage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
   const { Search } = Input;
@@ -10,22 +10,22 @@ const HistoryPage = () => {
 
   const data = [
     {
-      title: "Consulta dia 01/01",
+      title: "Plano X01",
     },
     {
-      title: "Consulta dia 01/02",
+      title: "Plano X02",
     },
     {
-      title: "Consulta dia 01/03",
+      title: "Plano X03",
     },
     {
-      title: "Consulta dia 01/04",
+      title: "Plano X04",
     },
     {
-      title: "Consulta dia 01/05",
+      title: "Plano X05",
     },
     {
-      title: "Consulta dia 01/06",
+      title: "Plano X06",
     },
   ];
   return (
@@ -36,10 +36,10 @@ const HistoryPage = () => {
       >
         <Row>
           <Col sm={24} xs={24} align="middle">
-            <Title>Histórico do Usuário</Title>
+            <Title>Planos de Saúde Aceitos</Title>
             <Col sm={22} xs={24} align="middle">
               <Search
-                placeholder="Digite o documento do usuário"
+                placeholder="Digite o nome do plano de saúde"
                 allowClear
                 enterButton="Buscar"
                 size={window.screen.width < 576 ? "small" : "large"}
@@ -60,10 +60,10 @@ const HistoryPage = () => {
                   dataSource={data}
                   renderItem={(item) => (
                     <List.Item>
-                      <Card title={item.title}>Descrição da consulta</Card>
-                      <Button style={{ margin: 10 }}>Editar consulta </Button>
+                      <Card title={item.title}>Descrição do Plano</Card>
+                      <Button style={{ margin: 10 }}>Editar Plano </Button>
                       <Button type="primary" danger style={{ margin: 10 }}>
-                        Deletar consulta{" "}
+                        Deletar Plano{" "}
                       </Button>
                     </List.Item>
                   )}
@@ -71,8 +71,9 @@ const HistoryPage = () => {
               ) : (
                 ""
               )}
+
               <Col align="end" style={{ marginTop: 50 }}>
-                <Button type="primary">Adicionar Consulta</Button>
+                <Button type="primary">Adicionar Plano</Button>
               </Col>
             </Col>
           </Col>
@@ -82,4 +83,4 @@ const HistoryPage = () => {
   );
 };
 
-export default HistoryPage;
+export default HealthPlansPage;

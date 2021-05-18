@@ -2,11 +2,12 @@ import React from "react";
 import { Layout } from "antd";
 import { Switch, Route } from "react-router-dom";
 
+import AppointmentPage from "../AppointmentPage";
 import CreatePage from "../CreatePage";
 import DeletePage from "../DeletePage";
 import LoginPage from "../LoginPage";
 import HistoryPage from "../HistoryPage";
-import HealthPlans from "../HealthPlans";
+import HealthPlansPage from "../HealthPlansPage";
 import SearchPage from "../SearchPage";
 import UpdatePage from "../UpdatePage";
 
@@ -35,10 +36,13 @@ const Content = () => {
           <HistoryPage />
         </Route>
         <Route path="/health-plans">
-          <HealthPlans />
+          <HealthPlansPage />
         </Route>
         <Route path="/payment">
           <></>
+        </Route>
+        <Route path="/appointment">
+          <AppointmentPage />
         </Route>
       </Switch>
     </div>
