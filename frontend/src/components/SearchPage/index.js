@@ -13,12 +13,12 @@ import {
 } from "antd";
 import axios from "axios";
 
-const SearchPage = (props) => {
+const SearchPage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
   const { Search } = Input;
 
-  const url = "http://localhost:3003/api/consultorio";
+  const url = "http://localhost:3003/api/userDataEndpoint";
   // const id = "6099e2a99e46b7251cf5f759";
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);

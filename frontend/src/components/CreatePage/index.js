@@ -24,7 +24,7 @@ const CreatePage = () => {
 
   // const [sended, setSended] = React.useState(false);
 
-  const url = "http://localhost:3003/api/consultorio";
+  const url = "http://localhost:3003/api/userDataEndpoint";
 
   const [form] = Form.useForm();
 

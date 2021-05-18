@@ -21,7 +21,7 @@ const DeletePage = () => {
 
   const [state, setState] = React.useState(undefined);
 
-  const url = "http://localhost:3003/api/consultorio";
+  const url = "http://localhost:3003/api/userDataEndpoint";
 
   const showModal = () => {
     setIsModalVisible(true);
