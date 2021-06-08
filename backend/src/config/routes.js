@@ -8,4 +8,8 @@ module.exports = function (server) {
   // userData Routes
   const userInfoService = require("../api/userData/userInfoService");
   userInfoService.register(router, "/userDataEndpoint");
+
+  // healthPlan Routes
+  const healthPlanService = require("../api/healthPlans/healthPlanService");
+  healthPlanService.register(router, "/healthPlanDataEndpoint");
 };
