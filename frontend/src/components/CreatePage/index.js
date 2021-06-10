@@ -20,6 +20,7 @@ const CreatePage = () => {
 
   const [state, setState] = React.useState({
     postalNumber: "",
+    healthPlans: [{}],
   });
 
   // const [sended, setSended] = React.useState(false);
@@ -37,6 +38,7 @@ const CreatePage = () => {
         federalDocument: values.federalDocument,
         gender: values.gender,
         name: values.name,
+        healthPlan: values.healthPlan,
         postalNumber: values.postalNumber,
         stateDocument: values.stateDocument,
         stateName: values.stateName,
@@ -63,16 +65,22 @@ const CreatePage = () => {
   };
 
   React.useEffect(() => {
-    if (state && state.postalNumber) {
-      api.get(`/ws/${state.postalNumber}/json/`).then((response) => {
-        form.setFieldsValue({
-          streetName: response.data.logradouro,
-          districtName: response.data.bairro,
-          cityName: response.data.localidade,
-          stateName: response.data.uf,
-        });
+    axios
+      .get("http://localhost:3003/api/healthPlanDataEndpoint")
+      .then((response) => {
+        setState({ healthPlans: response.data });
       });
-    }
+  }, []);
+
+  React.useEffect(() => {
+    api.get(`/ws/${state.postalNumber}/json/`).then((response) => {
+      form.setFieldsValue({
+        streetName: response.data.logradouro,
+        districtName: response.data.bairro,
+        cityName: response.data.localidade,
+        stateName: response.data.uf,
+      });
+    });
   });
 
   return (
@@ -177,6 +185,23 @@ const CreatePage = () => {
                   ]}
                 >
                   <Input />
+                </Form.Item>
+
+                <Form.Item
+                  name="healthPlan"
+                  label="Plano de Saúde"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor insira um Plano de Saúde!",
+                    },
+                  ]}
+                >
+                  <Select allowClear showSearch optionFilterProp="children">
+                    {state.healthPlans.map((teste) => (
+                      <Option value={teste.name}>{teste.name}</Option>
+                    ))}
+                  </Select>
                 </Form.Item>
 
                 <Form.Item
