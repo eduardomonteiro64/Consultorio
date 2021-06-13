@@ -12,4 +12,8 @@ module.exports = function (server) {
   // healthPlan Routes
   const healthPlanService = require("../api/healthPlans/healthPlanService");
   healthPlanService.register(router, "/healthPlanDataEndpoint");
+
+  // userHistory Routes
+  const userHistoryService = require("../api/userHistory/userHistoryService");
+  userHistoryService.register(router, "/userHistoryService");
 };

@@ -89,7 +89,7 @@ const UpdatePage = () => {
                       {state.name}
                     </Descriptions.Item>
                     <Descriptions.Item label="Genero">
-                      {state.gender}
+                      {state.gender === "male" ? "Masculino" : "Feminino"}
                     </Descriptions.Item>
                     <Descriptions.Item label="Data de Nascimento">
                       {state.birthDate ? state.birthDate.substring(0, 10) : ""}

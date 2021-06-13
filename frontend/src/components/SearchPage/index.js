@@ -19,7 +19,6 @@ const SearchPage = () => {
   const { Search } = Input;
 
   const url = "http://localhost:3003/api/userDataEndpoint";
-  // const id = "6099e2a99e46b7251cf5f759";
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
@@ -86,7 +85,7 @@ const SearchPage = () => {
                         {state.name}
                       </Descriptions.Item>
                       <Descriptions.Item label="Genero">
-                        {state.gender && state.gender === "male"
+                        {state && state.gender === "male"
                           ? "Masculino"
                           : "Feminino"}
                       </Descriptions.Item>
