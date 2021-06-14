@@ -9,13 +9,32 @@ import {
   Typography,
 } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import React from "react";
 
 const LoginPage = () => {
+  const [loginSuccess, setLoginSuccess] = React.useState(false);
+
   const { Content } = Layout;
   const { Title } = Typography;
+  const isLogged = JSON.parse(localStorage.getItem("user_consultorio"));
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const { password, username } = values;
+
+    if (username === "admin" && password === "admin") {
+      localStorage.setItem("user_consultorio", true);
+      return setLoginSuccess(true);
+    } else {
+      alert("Usuário ou senha incorreto!");
+    }
   };
+
+  React.useEffect(() => {
+    if (isLogged || loginSuccess) {
+      setTimeout(() => {
+        return (window.location.href = "/search");
+      }, [500]);
+    }
+  }, [isLogged, loginSuccess]);
 
   return (
     <Content style={{ margin: "0 16px" }}>

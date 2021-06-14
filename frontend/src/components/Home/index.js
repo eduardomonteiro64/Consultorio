@@ -17,15 +17,18 @@ const Home = () => {
   return (
     <div>
       <Layout style={{ minHeight: "100vh" }}>
-        <Sider
-          collapsed={window.screen.width < 576 ? true : collapsed}
-          onCollapse={onCollapse}
-          collapsible={window.screen.width < 576 ? false : true}
-          defaultCollapsed={false}
-        >
-          <div className="logo" />
-          <Menu />
-        </Sider>
+        {JSON.parse(localStorage.getItem("user_consultorio")) && (
+          <Sider
+            collapsed={window.screen.width < 576 ? true : collapsed}
+            onCollapse={onCollapse}
+            collapsible={window.screen.width < 576 ? false : true}
+            defaultCollapsed={false}
+          >
+            <div className="logo" />
+            <Menu />
+          </Sider>
+        )}
+
         <Layout className="site-layout">
           <Content />
           <Footer />
