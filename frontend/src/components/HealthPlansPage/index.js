@@ -16,7 +16,6 @@ import axios from "axios";
 const HealthPlansPage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
-  const { Search } = Input;
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
@@ -56,8 +55,6 @@ const HealthPlansPage = () => {
     alert("Faltam campos a serem preenchidos.");
   };
 
-  const onSearch = (value) => console.log(value);
-
   React.useEffect(() => {
     axios.get(url).then((response) => {
       setState({ ...state, healthPlanData: response.data });
@@ -75,14 +72,6 @@ const HealthPlansPage = () => {
           <Col sm={24} xs={24} align="middle">
             <Title>Planos de Saúde Aceitos</Title>
             <Col sm={22} xs={24} align="middle">
-              <Search
-                placeholder="Digite o nome do plano de saúde"
-                allowClear
-                enterButton="Buscar"
-                size={window.screen.width < 576 ? "small" : "large"}
-                onSearch={onSearch}
-                style={{ margin: 20 }}
-              />
               {state && state.healthPlanData.length >= 1 ? (
                 <List
                   grid={{

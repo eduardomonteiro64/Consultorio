@@ -10,6 +10,7 @@ import HistoryPage from "../HistoryPage";
 import HealthPlansPage from "../HealthPlansPage";
 import SearchPage from "../SearchPage";
 import UpdatePage from "../UpdatePage";
+import PaymentPage from "../PaymentPage";
 
 const Content = () => {
   const { Header } = Layout;
@@ -39,7 +40,7 @@ const Content = () => {
           <HealthPlansPage />
         </Route>
         <Route path="/payment">
-          <></>
+          <PaymentPage />
         </Route>
         <Route path="/appointment">
           <AppointmentPage />
