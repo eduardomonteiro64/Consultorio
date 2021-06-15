@@ -10,7 +10,6 @@ import {
   Button,
   Modal,
   Form,
-  DatePicker,
 } from "antd";
 import axios from "axios";
 import "moment/locale/pt-br";
