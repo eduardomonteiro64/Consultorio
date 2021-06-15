@@ -9,13 +9,16 @@ import {
   Button,
   Modal,
   Form,
+  Drawer,
 } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import MaskedInput from "antd-mask-input";
 
 const AppointmentPage = () => {
   const { Content } = Layout;
   const { Title } = Typography;
+  const { Search } = Input;
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
@@ -31,38 +34,60 @@ const AppointmentPage = () => {
     setIsModalVisible(false);
   };
 
-  const [state, setState] = React.useState({ appointments: "" });
+  const [state, setState] = React.useState({
+    appointments: "",
+    userSchedule: "",
+  });
+
+  const [visible, setVisible] = React.useState(false);
+
+  const url = "http://localhost:3003/api/userScheduleService";
+
+  const handleClick = (id) => {
+    axios.delete(`${url}/${id}`).then((resp) => resp);
+    alert("Consulta deletada com sucesso!");
+    window.location.reload();
+  };
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
 
   const onFinish = (values) => {
     axios
-      .post("http://localhost:3003/api/userScheduleService", {
+      .post(`${url}`, {
         time: values.time,
         date: values.date,
         name: values.name,
         stateDocument: values.stateDocument,
       })
       .then((resp) => resp);
+    alert("Consulta incluida com sucesso!");
+    window.location.reload();
   };
 
   const onFinishFailed = () => {
     alert("Faltam campos a serem preenchidos.");
   };
 
-  const data = [
-    "10 Horas - Consulta com Paciente 01",
-    "11 Horas - Consulta com Paciente 02",
-    "12 Horas - Consulta com Paciente 03",
-    "13 Horas - Consulta com Paciente 04",
-    "14 Horas - Consulta com Paciente 05",
-  ];
+  const onSearch = (value) => {
+    axios.get(`${url}?stateDocument=${value}`).then((response) => {
+      setState({ ...state, userSchedule: response.data });
+      response.data && response.data.length >= 1
+        ? showDrawer()
+        : alert("Usuário não possui consultas agendadas.");
+    });
+  };
 
   React.useEffect(() => {
     const todayDate = new Date().toISOString().slice(0, 10);
-    axios
-      .get(`http://localhost:3003/api/userScheduleService?date=${todayDate}`)
-      .then((response) => {
-        setState({ ...state, appointments: response.data });
-      });
+    axios.get(`${url}?date=${todayDate}`).then((response) => {
+      setState({ ...state, appointments: response.data });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -75,8 +100,57 @@ const AppointmentPage = () => {
         <Row>
           <Col sm={24} xs={24} align="middle">
             <Title>Consultas do Dia</Title>
+            <Search
+              placeholder="Digite o documento do usuário"
+              allowClear
+              enterButton="Buscar"
+              size={window.screen.width < 576 ? "small" : "large"}
+              onSearch={onSearch}
+              style={{ margin: 20 }}
+            />
+            <Drawer
+              width={640}
+              placement="right"
+              closable={false}
+              onClose={onClose}
+              visible={visible}
+            >
+              {state && state.userSchedule.length >= 1 ? (
+                <List
+                  bordered
+                  dataSource={
+                    state && state.userSchedule ? state.userSchedule : ""
+                  }
+                  renderItem={(item) => (
+                    <List.Item>
+                      <Typography style={{ padding: 10 }}>
+                        Dia da consulta: {item.date.substring(0, 10)}
+                      </Typography>{" "}
+                      <Typography style={{ padding: 10 }}>
+                        Hora da consulta: {item.time}
+                      </Typography>{" "}
+                      <Typography style={{ padding: 10 }}>
+                        <b>Nome do paciente: {item.name}</b>
+                      </Typography>{" "}
+                      <Typography style={{ padding: 10 }}>
+                        <Button
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleClick(item._id)}
+                          type="primary"
+                          danger
+                        >
+                          Deletar Consulta
+                        </Button>
+                      </Typography>{" "}
+                    </List.Item>
+                  )}
+                />
+              ) : (
+                ""
+              )}
+            </Drawer>
             <Col sm={22} xs={24} align="middle">
-              {data && data.length > 1 ? (
+              {state && state.appointments.length >= 1 ? (
                 <List
                   header={
                     <div>
@@ -94,10 +168,22 @@ const AppointmentPage = () => {
                   }
                   renderItem={(item) => (
                     <List.Item>
-                      <Typography>Hora da consulta: {item.time}</Typography>{" "}
-                      <Typography.Text mark>
-                        Nome do paciente: {item.name}
+                      <Typography style={{ padding: 10 }}>
+                        Hora da consulta: {item.time}
+                      </Typography>{" "}
+                      <Typography.Text mark style={{ padding: 10 }}>
+                        <b>Nome do paciente: {item.name}</b>
                       </Typography.Text>{" "}
+                      <Typography style={{ padding: 10 }}>
+                        <Button
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleClick(item._id)}
+                          type="primary"
+                          danger
+                        >
+                          Deletar Consulta
+                        </Button>
+                      </Typography>{" "}
                     </List.Item>
                   )}
                 />
