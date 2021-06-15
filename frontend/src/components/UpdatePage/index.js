@@ -12,6 +12,7 @@ import {
   Form,
 } from "antd";
 import axios from "axios";
+import MaskedInput from "antd-mask-input/build/main/lib/MaskedInput";
 
 const UpdatePage = () => {
   const { Content } = Layout;
@@ -239,7 +240,10 @@ const UpdatePage = () => {
                           },
                         ]}
                       >
-                        <Input placeholder="Insira uma data de nascimento válida." />
+                        <MaskedInput
+                          mask="1111-11-11"
+                          placeholder="Ano/Mes/Dia"
+                        />
                       </Form.Item>
                     </Col>
                     <Col span={24}>

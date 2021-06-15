@@ -14,7 +14,7 @@ import {
 } from "antd";
 import axios from "axios";
 import "moment/locale/pt-br";
-import locale from "antd/es/date-picker/locale/pt_BR";
+import MaskedInput from "antd-mask-input/build/main/lib/MaskedInput";
 
 const HistoryPage = () => {
   const { Content } = Layout;
@@ -160,7 +160,10 @@ const HistoryPage = () => {
                         },
                       ]}
                     >
-                      <DatePicker locale={locale} format="DD/MM/YYYY" />
+                      <MaskedInput
+                        mask="1111-11-11"
+                        placeholder="Ano/Mes/Dia"
+                      />
                     </Form.Item>
                     <Form.Item
                       label="Descrição da Consulta"

@@ -8,9 +8,9 @@ import {
   Input,
   Button,
   Select,
-  DatePicker,
 } from "antd";
 import axios from "axios";
+import MaskedInput from "antd-mask-input";
 
 const CreatePage = () => {
   const { Content } = Layout;
@@ -22,8 +22,6 @@ const CreatePage = () => {
     postalNumber: "",
     healthPlans: [{}],
   });
-
-  // const [sended, setSended] = React.useState(false);
 
   const url = "http://localhost:3003/api/userDataEndpoint";
 
@@ -171,7 +169,7 @@ const CreatePage = () => {
                     },
                   ]}
                 >
-                  <DatePicker />
+                  <MaskedInput mask="1111-11-11" placeholder="Ano/Mes/Dia" />
                 </Form.Item>
 
                 <Form.Item
