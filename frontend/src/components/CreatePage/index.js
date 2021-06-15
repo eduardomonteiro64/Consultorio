@@ -121,7 +121,7 @@ const CreatePage = () => {
                 </Form.Item>
 
                 <Form.Item label="CPF" name="federalDocument">
-                  <Input />
+                  <MaskedInput mask="111.111.111-1*" />
                 </Form.Item>
 
                 <Form.Item
@@ -134,7 +134,7 @@ const CreatePage = () => {
                     },
                   ]}
                 >
-                  <Input />
+                  <MaskedInput mask="11.111.111-1" />
                 </Form.Item>
 
                 <Form.Item
@@ -183,7 +183,7 @@ const CreatePage = () => {
                     },
                   ]}
                 >
-                  <Input />
+                  <MaskedInput mask="(11)11111-1111" />
                 </Form.Item>
 
                 <Form.Item label="Email" name="email">
